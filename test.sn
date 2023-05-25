@@ -1,0 +1,14 @@
+generate_linear_srgb :: () -> [] float {
+     srgb_table: float[SRGB_TABLE_SIZE];
+     for srgb_table {
+         << it = real_linear_to_srgb(cast(float)it_index / SRGB_TABLE_SIZE)
+     }
+     return srgb_table;
+}
+
+srgb_table: [] float = #run generate_linear_srgb(); // #run invokes the compile time execution
+
+real_linear_to_srgb :: (f: float) -> float {
+    table_index := cast(int)(f * SRGB_TABLE_SIZE);
+    return srgb_table[table_index];
+}
